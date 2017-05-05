@@ -1,0 +1,19 @@
+{
+  "name": "dox",
+  "version": "1.0.0",
+  "description": "markdown development server",
+  "main": "index.js",
+  "dependencies": {
+    "marked": "^0.3.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "markdown",
+    "documentation"
+  ],
+  "author": "alan@theprices.us",
+  "license": "MIT"
+}
