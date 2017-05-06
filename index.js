@@ -9,7 +9,7 @@ process.argv.forEach(function (val, index, array) {
   // First two arguments will be node and this file path.
   if (index > 1) {
     console.log(index + ': ' + val);
-    port = val;
+    port = parseInt(val);
   }
 
 });
@@ -22,21 +22,6 @@ const mimeTypes = {
     ".jpg": "image/jpg",
     ".wav": "audio/wav"
 };
-
-const indexHtml = [
-    "<!DOCTYPE html>",
-    "<html lang='en'>",
-        "<head>",
-            "<title>DOX</title>",
-            "<link href='style.css' rel='stylesheet'>",
-            "<script src='node_modules/marked/marked.min.js'></script>",
-            "<script src='markdownloader.js'></script>",
-        "</head>",
-        "<body>",
-            "<h3>loading</h3>",
-        "</body>",
-    "</html>"
-    ].join("\n");
 
 http.createServer(function (request, response) {
     console.log(["Url:", request.url].join(" "));
@@ -52,9 +37,6 @@ http.createServer(function (request, response) {
 
     if (filePath == "./" || filePath == "./index.html") {
         filePath = "./index.html";
-        // response.writeHead(200, { "Content-Type": contentType });
-        // response.end(indexHtml, "utf-8");
-        // return;
     }
 
     var extname = path.extname(filePath);
