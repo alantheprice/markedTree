@@ -99,7 +99,7 @@ class Runner {
      */
     setDoc(link) {
         link = this.links[link.hashLink] || link;
-        if (link.markHtml) {
+        if (link.markdownLoaded) {
             return Promise.resolve(this.links[link.hashLink])
         }
         return this.fetchDoc(link)
@@ -161,8 +161,7 @@ class Runner {
             return `${title} <ul class="minimal"> ${rendered}</ul>`;
         }).join("\n");
         
-       // let rootView = `<ul class="minimal">${root.getMarkup()}</ul>`;
-        this.setHtml("links", rendered);//[rootView, rendered].join("\n"));
+        this.setHtml("links", rendered);
     }
 
     /**
@@ -173,35 +172,43 @@ class Runner {
      */
     fetchDoc(link) {
         return fetch(link.href)
-            .then((response) => (response.ok)? response.text() : "")
+            .then((response) => (response.ok)? response.text() : null)
             .catch((error) => this.handleError(error));
     }
 
+    /**
+     * 
+     * 
+     * @param {any} docString 
+     * @param {Link} link 
+     * @returns 
+     * 
+     * @memberof Runner
+     */
     mapDoc(docString, link) {
-        if (!docString || docString === "") {
+        if (docString == null) {
             return;
         }
-        link.markHtml = marked(docString, this.getMarkedOptions(link.href));
+        if (docString !== "") {
+            link.markHtml = marked(docString, this.getMarkedOptions(link.href));
+        } else {
+            link.setEmptyView();
+        }
+        link.markdownLoaded = true;
         this.links[link.hashLink] = link;
         return link;
     }
 
     setView(link) {
         if (link.isExternal) {
-            this.openExternalLink(link);
             return;
         }
         this.currentHash = link.hashLink;
-        window.location.hashLink = this.currentHash;
         this.setHtml("content", link.markHtml);
     }
 
     setHtml(id, innerHTML) {
         document.getElementById(id).innerHTML = innerHTML;
-    }
-
-    openExternalLink(link) {
-        window.location.assign(link.href);
     }
 
     handleError(error) {

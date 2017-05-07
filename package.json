@@ -1,14 +1,15 @@
 {
-  "name": "dox",
+  "name": "marked-tree",
   "version": "1.0.0",
-  "description": "markdown development server",
+  "description": "development markdown viewer",
   "main": "index.js",
   "dependencies": {
     "marked": "^0.3.6"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start": "cd src; node ../index.js"
   },
   "keywords": [
     "markdown",

@@ -15,7 +15,8 @@
         this.href = fullPath;
         this.hashLink = (isExternal)? fullPath : this.getHashLink(fullPath);
         this.linkText = linkText || fullPath;
-        this.markHtml = ""
+        this.markdownLoaded = false;
+        this.markHtml = "";
     }
 
     /**
@@ -55,7 +56,11 @@
             return hl;
         }
         return  `<li>${hl}</li>`;
+    }
+    
 
+    setEmptyView() {
+        this.markHtml = `<h3>Markdown doesn't have any data</h3>`;
     }
 
  }
