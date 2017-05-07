@@ -9,7 +9,7 @@
   "devDependencies": {},
   "scripts": {
     "test": "npm test",
-    "start": "cd src; node ../index.js"
+    "start": "node index.js"
   },
   "keywords": [
     "markdown",

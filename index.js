@@ -23,8 +23,13 @@ const mimeTypes = {
     ".wav": "audio/wav"
 };
 
+const fileMap = {
+
+};
+
 http.createServer(function (request, response) {
     console.log(["Url:", request.url].join(" "));
+    console.log(__dirname);
 
     // only add a dot to the current path if it is not already added.
     var filePath = (request.url.indexOf(".") === 0) ? request.url : "." + request.url;
@@ -35,8 +40,17 @@ http.createServer(function (request, response) {
         return;
     }
 
-    if (filePath == "./" || filePath == "./index.html") {
-        filePath = "./index.html";
+    // FIXME: Do a map for these files instead of this mess.
+    if (filePath === "./" || filePath === "./index.html") {
+        filePath = __dirname + "/index.html";
+    } else if (filePath.indexOf("style.css") > -1) {
+        filePath = __dirname + "/style.css";
+    } else if (filePath.indexOf("marked.min.js") > -1) {
+        filePath = __dirname + "/node_modules/marked/marked.min.js";
+    } else if (filePath.indexOf("src/link.js") > -1) {
+        filePath = __dirname + "/src/link.js";
+    } else if (filePath.indexOf("src/main.js") > -1) {
+        filePath = __dirname + "/src/main.js";
     }
 
     var extname = path.extname(filePath);
