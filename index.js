@@ -23,9 +23,23 @@ const mimeTypes = {
     ".wav": "audio/wav"
 };
 
-const fileMap = {
-
+const reDirectMap = {
+    "./": __dirname + "/index.html",
+    "./index.html": __dirname + "/index.html",
+    "./style.css": __dirname + "/style.css",
+    "./node_modules/marked/marked.min.js": getMarkedPath(),
+    "./src/link.js":  __dirname + "/src/link.js",
+    "./src/main.js":  __dirname + "/src/main.js",
 };
+
+function getMarkedPath() {
+    if (__dirname.indexOf("node_modules") > -1) {
+        // in this case we have been installed and need to find marked as a sibling.
+        return (__dirname + "/marked/marked.min.js").replace("/marked-tree", "");
+    } else {
+        return __dirname + "/node_modules/marked/marked.min.js";
+    }
+}
 
 http.createServer(function (request, response) {
     console.log(["Url:", request.url].join(" "));
@@ -36,22 +50,14 @@ http.createServer(function (request, response) {
 
     // attempting to go beyond the served directory should be stopped.
     if (filePath.indexOf("..") === 0) {
-        response.writeHead(500, "File path not allowed.");
+        response.writeHead(403, "File path not allowed.");
         return;
     }
 
-    // FIXME: Do a map for these files instead of this mess.
-    if (filePath === "./" || filePath === "./index.html") {
-        filePath = __dirname + "/index.html";
-    } else if (filePath.indexOf("style.css") > -1) {
-        filePath = __dirname + "/style.css";
-    } else if (filePath.indexOf("marked.min.js") > -1) {
-        filePath = __dirname + "/node_modules/marked/marked.min.js";
-    } else if (filePath.indexOf("src/link.js") > -1) {
-        filePath = __dirname + "/src/link.js";
-    } else if (filePath.indexOf("src/main.js") > -1) {
-        filePath = __dirname + "/src/main.js";
-    }
+    // Redirect for core served files needed to be directly relative to the 
+    filePath = reDirectMap[filePath] || filePath;
+
+    console.log(filePath);
 
     var extname = path.extname(filePath);
     var contentType = mimeTypes[extname] || "text/html";
