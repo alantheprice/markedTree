@@ -19,8 +19,10 @@ class Runner {
             .then((link) => this.setView(link))
             .then(() => this.buildLinkStructure())
             .then(() => {
-                if (link.hashLink !== window.location.hash) {
+                if (link.hashLink !== window.location.hash && window.location.hash !== "") {
                     this.handleHashChange();
+                } else {
+                    window.location.hash = this.currentHash;
                 }
             });
     }
