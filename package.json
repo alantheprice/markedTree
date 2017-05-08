@@ -4,7 +4,8 @@
   "description": "development markdown viewer",
   "main": "index.js",
   "dependencies": {
-    "marked": "0.3.6"
+    "marked": "0.3.6",
+    "opn": "^5.0.0"
   },
   "devDependencies": {},
   "scripts": {

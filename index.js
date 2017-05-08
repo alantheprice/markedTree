@@ -1,7 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
-const spawn = require("child_process").spawn;
+const opn = require("opn");
 
 const DEFAULT_PORT = 3500;
 var port = DEFAULT_PORT;
@@ -82,6 +82,6 @@ http.createServer(function (request, response) {
 
 }).listen(port);
 
-spawn("open", ["http://127.0.0.1:" + port + "#README.md"]);
+opn("http://127.0.0.1:" + port + "#README.md");
 
 console.log(["Server running at http://127.0.0.1:", port, "/"].join(""));
