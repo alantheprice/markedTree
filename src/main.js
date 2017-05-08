@@ -17,18 +17,25 @@ class Runner {
         let link = this.buildLink(this.STARTING_DOCUMENT, "./", this.ROOT_NAME);
         this.setDoc(link)
             .then((link) => this.setView(link))
-            .then(() => this.buildLinkStructure());
+            .then(() => this.buildLinkStructure())
+            .then(() => {
+                if (link.hashLink !== window.location.hash) {
+                    this.handleHashChange();
+                }
+            });
     }
 
     handleHashChange() {
         if (location.hash === this.currentHash) {
+            console.log("hash Hasn't changed");
             return;
         }
         let link = this.buildLink(location.hash.replace("#", ""), "./");
         if (link.isExternal) {
-            this.openExternalLink(link);
+            console.log("isExternal");
             return;
         }
+        console.log("begin setting view.");
         this.setDoc(link)
             .then((link) => this.setView(link))
             .then(() => this.buildLinkStructure());

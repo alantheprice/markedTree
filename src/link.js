@@ -23,7 +23,7 @@
      * Gets the hash for the haslink instance
      * 
      * @param {string} fullPath 
-     * @returns 
+     * @returns {string}
      * 
      * @memberof Link
      */
