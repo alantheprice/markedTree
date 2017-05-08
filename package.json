@@ -1,6 +1,6 @@
 {
   "name": "marked-tree",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "development markdown viewer",
   "main": "index.js",
   "dependencies": {

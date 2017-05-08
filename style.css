@@ -33,6 +33,13 @@ div.link-header {
     padding: .2em .7em;
 }
 
+pre {
+    background-color: rgba(200,200,200, .1);
+}
+code {
+    background-color: rgba(200,200,200, .1);
+}
+
 .content {
     padding: 15px;
 }
