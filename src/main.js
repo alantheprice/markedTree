@@ -75,12 +75,11 @@ class Runner {
      * @param {string} [linkText]
      * @returns {Link}
      */
-    buildLink(href, contextUrl, linkText) {
+    buildLink(href, contextUrl = "/", linkText) {
 
         if (href.indexOf("http") === 0) {
             return new Link(true, href,  linkText);
         }
-        contextUrl = contextUrl || "/";
 
         let path = contextUrl.split("/").reduce(this.buildPath, "");
         console.log(path);
@@ -109,7 +108,7 @@ class Runner {
     setDoc(link) {
         link = this.links[link.hashLink] || link;
         if (link.markdownLoaded) {
-            return Promise.resolve(this.links[link.hashLink])
+            return Promise.resolve(this.links[link.hashLink]);
         }
         return this.fetchDoc(link)
             .then((docString) => this.mapDoc(docString, link));
