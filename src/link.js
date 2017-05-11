@@ -1,5 +1,5 @@
 
- class Link {
+export class Link {
 
     /**
      * Creates an instance of Link.
@@ -63,4 +63,38 @@
         this.markHtml = `<h3>Markdown doesn't have any data</h3>`;
     }
 
- }
+}
+
+
+/**
+ * Builds a link from a url and context url
+ * 
+ * @param {string} href 
+ * @param {string} contextUrl - calling context url, needed to resolve relative paths.
+ * @param {string} [linkText]
+ * @returns {Link}
+ */
+Link.buildLink = function buildLink(href, contextUrl, linkText) {
+
+    if (href.indexOf("http") === 0) {
+        return new Link(true, href,  linkText);
+    }
+    contextUrl = contextUrl || "/";
+
+    let path = contextUrl.split("/").reduce(Link.buildPath, "");
+    let fullPath = [path, href.replace("./", "")].join("");
+    return new Link(false, fullPath, linkText);
+}
+
+Link.buildPath = function buildPath(combined, next, index, arr) {
+    if (arr.length === index + 1) {
+        return (combined !== "")? combined + "/" : combined;
+    }
+    if (!next) {
+        return combined;
+    } else if (!combined) {
+        return next;
+    }
+    return [combined, next].join("/");
+}
+

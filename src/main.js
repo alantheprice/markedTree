@@ -1,5 +1,6 @@
+import { Link } from "./link.js";
 
-class Runner {
+export class Runner {
 
     constructor() {
         this.STARTING_DOCUMENT = "README.md";
@@ -9,12 +10,12 @@ class Runner {
          * @type {{[x: string]: Link}
          */
         this.links = {};
-        window.onload = () => this.init();
+        this.init();
         window.onhashchange = () => this.handleHashChange();
     }
 
     init() {
-        let link = this.buildLink(this.STARTING_DOCUMENT, "./", this.ROOT_NAME);
+        let link = Link.buildLink(this.STARTING_DOCUMENT, "./", this.ROOT_NAME);
         this.setDoc(link)
             .then((link) => this.setView(link))
             .then(() => this.buildLinkStructure())
@@ -29,15 +30,13 @@ class Runner {
 
     handleHashChange() {
         if (location.hash === this.currentHash) {
-            console.log("hash Hasn't changed");
             return;
         }
-        let link = this.buildLink(location.hash.replace("#", ""), "./");
+        var link = Link.buildLink(location.hash.replace("#", ""), "./");
+        link = this.links[link.hashLink] || link;
         if (link.isExternal) {
-            console.log("isExternal");
             return;
         }
-        console.log("begin setting view.");
         this.setDoc(link)
             .then((link) => this.setView(link))
             .then(() => this.buildLinkStructure());
@@ -46,7 +45,7 @@ class Runner {
     getMarkedOptions(contextUrl) {
         let renderer = new marked.Renderer();
         console.log(contextUrl);
-        renderer.link = this.getLink(contextUrl);
+        renderer.link = this.getLinkFunction(contextUrl);
         return {
             renderer: renderer,
             gfm: true,
@@ -59,47 +58,14 @@ class Runner {
         };
     }
 
-    getLink(contextUrl) {
+    getLinkFunction(contextUrl) {
         return (href, title, text) => {
-            let link = this.buildLink(href, contextUrl, text);
+            let link = Link.buildLink(href, contextUrl, text);
             this.links[link.hashLink] = link;
             return link.getMarkup(false);
         }
     }
 
-    /**
-     * Builds a link from a url and context url
-     * 
-     * @param {string} href 
-     * @param {string} contextUrl - calling context url, needed to resolve relative paths.
-     * @param {string} [linkText]
-     * @returns {Link}
-     */
-    buildLink(href, contextUrl, linkText) {
-
-        if (href.indexOf("http") === 0) {
-            return new Link(true, href,  linkText);
-        }
-        contextUrl = contextUrl || "/";
-
-        let path = contextUrl.split("/").reduce(this.buildPath, "");
-        console.log(path);
-        let fullPath = [path, href.replace("./", "")].join("");
-        let link = new Link(false, fullPath, linkText);
-        return this.links[link.hashLink] || link;
-    }
-
-    buildPath(combined, next, index, arr) {
-        if (arr.length === index + 1) {
-            return (combined !== "")? combined + "/" : combined;
-        }
-        if (!next) {
-            return combined;
-        } else if (!combined) {
-            return next;
-        }
-        return [combined, next].join("/");
-    }
 
     /**
      * Gets document string for a url
@@ -181,8 +147,11 @@ class Runner {
      */
     fetchDoc(link) {
         return fetch(link.href)
-            .then((response) => (response.ok)? response.text() : null)
-            .catch((error) => this.handleError(error));
+            .then((response) => (response.ok)? response.text() : "")
+            .catch((error) => {
+                this.handleError(error);
+                return "";
+            });
     }
 
     /**

@@ -5,9 +5,11 @@
   "main": "index.js",
   "dependencies": {
     "marked": "0.3.6",
-    "opn": "^5.0.0"
+    "opn": "5.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "es6-import": "^1.0.0"
+  },
   "scripts": {
     "start": "node index.js"
   },
