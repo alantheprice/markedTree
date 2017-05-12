@@ -8,3 +8,5 @@ Holds and manipulates data for a link and has the following properties:
 * `linkText`: {string} - the actual visible text associated with a link instance.
 * `markdownLoaded`: {boolean} - indicating whether the markdown file has been loaded already or not, needed since just checking for an empty string is not sufficient for the instance of an empty, but downloaded markdown file. 
 * `markHtml`: {string} - the html string for the markdown file.  stored within the link object as an in memory cache so we don't reload the same file multiple times.
+
+[fake Url to validate it handles broken paths](./fakeUrl.md);

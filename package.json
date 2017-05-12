@@ -1,6 +1,6 @@
 {
   "name": "marked-tree",
-  "version": "0.7.5",
+  "version": "0.8.0",
   "description": "development markdown viewer",
   "main": "index.js",
   "dependencies": {
@@ -8,7 +8,7 @@
     "opn": "5.0.0"
   },
   "devDependencies": {
-    "es6-import": "^1.0.0"
+    "es6-import": "1.1.0"
   },
   "scripts": {
     "start": "node index.js"

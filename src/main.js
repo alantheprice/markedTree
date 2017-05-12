@@ -1,4 +1,5 @@
 import { Link } from "./link.js";
+import { MarkedConverter } from "./markdownConverter.js";
 
 export class Runner {
 
@@ -6,6 +7,7 @@ export class Runner {
         this.STARTING_DOCUMENT = "README.md";
         this.ROOT_NAME = "Root";
         this.currentHash = "#" + this.STARTING_DOCUMENT;
+        this.markConverter = new MarkedConverter(link => this.linkFound(link));
         /**
          * @type {{[x: string]: Link}
          */
@@ -42,30 +44,19 @@ export class Runner {
             .then(() => this.buildLinkStructure());
     }
 
-    getMarkedOptions(contextUrl) {
-        let renderer = new marked.Renderer();
-        console.log(contextUrl);
-        renderer.link = this.getLinkFunction(contextUrl);
-        return {
-            renderer: renderer,
-            gfm: true,
-            tables: true,
-            breaks: false,
-            pedantic: false,
-            sanitize: false,
-            smartLists: true,
-            smartypants: false
-        };
-    }
-
-    getLinkFunction(contextUrl) {
-        return (href, title, text) => {
-            let link = Link.buildLink(href, contextUrl, text);
+    /**
+     * 
+     * 
+     * @param {Link} link 
+     * 
+     * @memberof Runner
+     */
+    linkFound(link) {
+        if (!this.links[link.hashLink]) {
+            // only add new links so we don't innadvertantly overwrite existing values.
             this.links[link.hashLink] = link;
-            return link.getMarkup(false);
         }
     }
-
 
     /**
      * Gets document string for a url
@@ -155,7 +146,7 @@ export class Runner {
     }
 
     /**
-     * 
+     * Maps the markdown 
      * 
      * @param {any} docString 
      * @param {Link} link 
@@ -164,11 +155,8 @@ export class Runner {
      * @memberof Runner
      */
     mapDoc(docString, link) {
-        if (docString == null) {
-            return;
-        }
         if (docString !== "") {
-            link.markHtml = marked(docString, this.getMarkedOptions(link.href));
+            link.markHtml = this.markConverter.convert(docString, link.href);
         } else {
             link.setEmptyView();
         }

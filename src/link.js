@@ -60,7 +60,7 @@ export class Link {
     
 
     setEmptyView() {
-        this.markHtml = `<h3>Markdown doesn't have any data</h3>`;
+        this.markHtml = `<h3>It looks like this markdown file doesn't have any content</h3>`;
     }
 
 }

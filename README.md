@@ -9,7 +9,9 @@ It is designed for well documented projects using many linked markdown files to 
 #### Install: Run `npm install marked-tree`
 
 #### Integrate: 
-The easiest way to integrate marked-tree into your project is to start it from the root of your project (assuming you have a README.md file at the root.)  Running it is as simple as adding a new npm script to your package.json like: `"document": "node node_modules/marked-tree/index.js"`.  This will run the server that will build your markdown documentation tree.
+The easiest way to integrate marked-tree into your project is to start it from the root of your project (assuming you have a README.md file at the root.)  Running it is as simple as adding a new npm script to your package.json like: `"document": "node node_modules/marked-tree/index.js"`.  You can then execute via `npm run-script document`. This will run the server that will build your markdown documentation tree. 
+
+### [Changelog](./CHANGELOG.md)
 
 #### Class Documentation
 
