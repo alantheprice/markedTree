@@ -66,7 +66,7 @@ export class Runner {
     setDoc(link) {
         link = this.links[link.hashLink] || link;
         if (link.markdownLoaded) {
-            return Promise.resolve(this.links[link.hashLink])
+            return Promise.resolve(this.links[link.hashLink]);
         }
         return this.fetchDoc(link)
             .then((docString) => this.mapDoc(docString, link));
