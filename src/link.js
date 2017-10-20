@@ -74,12 +74,11 @@ export class Link {
  * @param {string} [linkText]
  * @returns {Link}
  */
-Link.buildLink = function buildLink(href, contextUrl, linkText) {
+Link.buildLink = function buildLink(href, contextUrl =  "/", linkText) {
 
     if (href.indexOf("http") === 0) {
         return new Link(true, href,  linkText);
     }
-    contextUrl = contextUrl || "/";
 
     let path = contextUrl.split("/").reduce(Link.buildPath, "");
     let fullPath = [path, href.replace("./", "")].join("");
